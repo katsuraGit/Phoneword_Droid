@@ -11,52 +11,40 @@ namespace Phoneword_Droid
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
+            // Set our view from the "main" layout resource
+            SetContentView(Resource.Layout.Main);
+
             EditText phoneNumberText = FindViewById<EditText>(Resource.Id.PhoneNumberText);
             Button translateButton = FindViewById<Button>(Resource.Id.TranslateButton);
-            Button callButton = FindViewById<Button> (Resource.Id.CallButton);
+            Button callButton = FindViewById<Button>(Resource.Id.CallButton);
 
             // "Call" を Disable にします
-
             callButton.Enabled = false;
 
             // 番号を変換するコードを追加します。
-
             string translatedNumber = string.Empty;
 
+            // 「translate」ボタンがクリックされた時に発火するイベント
             translateButton.Click += (object sender, EventArgs e) =>
-
             {
-
                 // ユーザーのアルファベットの電話番号を電話番号に変換します。
-
                 translatedNumber = Core.PhonewordTranslator.ToNumber(phoneNumberText.Text);
 
                 if (String.IsNullOrWhiteSpace(translatedNumber))
-
                 {
-
                     callButton.Text = "Call";
 
                     callButton.Enabled = false;
-
                 }
-
                 else
-
                 {
-
                     callButton.Text = "Call " + translatedNumber;
-
                     callButton.Enabled = true;
-
                 }
-
             };
 
-
-
+            // 「Call」ボタンがクリックされた時に発火するイベント
             callButton.Click += (object sender, EventArgs e) =>
-
             {
 
                 Bundle args = new Bundle();
@@ -66,9 +54,6 @@ namespace Phoneword_Droid
                 // ShowDialog(DIALOG_ID_CALL, args);
 
             };
-
-            // Set our view from the "main" layout resource
-            SetContentView (Resource.Layout.Main);
         }
     }
 }
