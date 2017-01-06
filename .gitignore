@@ -12,6 +12,7 @@
 bin/
 gen/
 out/
+obj/
 
 # Gradle files
 .gradle/
@@ -88,3 +89,7 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+*.dll
+*.mdb
+*.java
+*.flag
