@@ -2,7 +2,7 @@ using System.Text;
 using System;
 namespace Core
 {
-    public static class PhonesordTranslator
+    public static class PhonewordTranslator
     {
         public static string ToNumber(string raw)
         {
