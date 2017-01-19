@@ -2,10 +2,11 @@
 using Android.Widget;
 using Android.OS;
 using System;
+using Android.Content;
 
 namespace Phoneword_Droid
 {
-    [Activity(Label = "Phoneword_Droid", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "電話アプリ", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)
@@ -46,12 +47,20 @@ namespace Phoneword_Droid
             // 「Call」ボタンがクリックされた時に発火するイベント
             callButton.Click += (object sender, EventArgs e) =>
             {
+                var callDialog = new AlertDialog.Builder(this);
+                callDialog.SetMessage("Call" + translatedNumber + "?");
+                callDialog.SetNeutralButton("Call", delegate
+                {
+                    var callIntent = new Intent(Intent.ActionCall);
+                    callIntent.SetData(Android.Net.Uri.Parse("tel:" + translatedNumber));
+                    StartActivity(callIntent);
 
-                Bundle args = new Bundle();
+                });
+                callDialog.SetNegativeButton("Cancel", delegate { });
 
-                args.PutString("translatedNumber", translatedNumber);
+                callDialog.Show();
+                  
 
-                // ShowDialog(DIALOG_ID_CALL, args);
 
             };
         }
