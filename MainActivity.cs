@@ -3,12 +3,16 @@ using Android.Widget;
 using Android.OS;
 using System;
 using Android.Content;
+using System.Collections.Generic;
+
+
 
 namespace Phoneword_Droid
 {
     [Activity(Label = "電話アプリ", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
+        static readonly List<string> phoneNumbers = new List<string>(); 
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
@@ -18,6 +22,7 @@ namespace Phoneword_Droid
             EditText phoneNumberText = FindViewById<EditText>(Resource.Id.PhoneNumberText);
             Button translateButton = FindViewById<Button>(Resource.Id.TranslateButton);
             Button callButton = FindViewById<Button>(Resource.Id.CallButton);
+            Button callHitoryButton = FindViewById<Button>(Resource.Id.CallHistoryButton);
 
             // "Call" を Disable にします
             callButton.Enabled = false;
@@ -51,6 +56,11 @@ namespace Phoneword_Droid
                 callDialog.SetMessage("Call" + translatedNumber + "?");
                 callDialog.SetNeutralButton("Call", delegate
                 {
+                    //履歴に番号追加
+                    phoneNumbers.Add(translatedNumber);
+                    //CallHistory ボタンを有効化
+                    callHitoryButton.Enabled = true;
+                    // 電話へのintent策債
                     var callIntent = new Intent(Intent.ActionCall);
                     callIntent.SetData(Android.Net.Uri.Parse("tel:" + translatedNumber));
                     StartActivity(callIntent);
@@ -62,6 +72,16 @@ namespace Phoneword_Droid
                   
 
 
+            };
+
+            // Call History ボタン
+            callHitoryButton.Click += (sender, e) =>
+            {
+                var intent = new Intent(this, typeof(CallHistoryActivity));
+                intent.PutStringArrayListExtra("phone_numbers", phoneNumbers);
+                StartActivity(intent);
+         
+          
             };
         }
     }
